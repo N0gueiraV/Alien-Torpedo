@@ -73,8 +73,12 @@ Create table Evento
 	,Nm_evento	varchar(60)
 	,Nm_endereco varchar(100)
 	,Vl_evento float
+	,Vl_nota float
+	,Dv_particular bit
+	,Cd_usuario int
 	Constraint pk_cd_evento primary key(Cd_evento)
 	,Constraint fk_evento_tipo_evento foreign key(Cd_tipo_evento) references Tipo_evento
+	,Constraint fk_evento_usuario foreign key(Cd_usuario) references Usuario
 )
 go 
 
