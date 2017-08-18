@@ -27,7 +27,7 @@ Set @local = ''; -- ex: 'C:\Users\Renato\Documents\Projetos\Alien-Torpedo'
 
 declare @Nm_scripts	varchar(8000)
 
-Set @Nm_scripts = 'create_database;create_table;';
+Set @Nm_scripts = 'create_database;create_tables;';
 
 
 if(@Nm_scripts != '')
