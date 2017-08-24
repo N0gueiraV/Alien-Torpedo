@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using AlienTorpedoAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlienTorpedoAPI
 {
@@ -29,6 +31,9 @@ namespace AlienTorpedoAPI
         {
             // Add framework services.
             services.AddMvc();
+            //Vinicius - Injeção de dependência no dbContext - INI 
+            services.AddDbContext<dbAlienContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //Vinicius - Injeção de dependência no dbContext - FIM
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
