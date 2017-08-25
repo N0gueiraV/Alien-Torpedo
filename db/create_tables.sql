@@ -37,7 +37,7 @@ go
 -- Grupo
 Create Table Grupo
 (
-	Cd_grupo		smallint
+	Cd_grupo		int identity(1,1)
 	,Nm_grupo		varchar(60)
 	,Dt_inclusao	datetime
 	Constraint pk_cd_grupo primary key(Cd_grupo)
@@ -48,7 +48,7 @@ go
 Create Table Grupo_usuario
 (
 	Cd_usuario	int
-	,Cd_grupo	smallint
+	,Cd_grupo	int
 	,Nr_voto	smallint
 	Constraint pk_cd_usuario_grupo primary key(Cd_usuario, Cd_grupo)
 	,Constraint fk_cd_usuario foreign key(Cd_usuario) references Usuario
@@ -86,7 +86,7 @@ go
 Create Table Grupo_evento
 (
 	Id_grupo_evento int
-	,Cd_grupo		smallint
+	,Cd_grupo		int
 	,Cd_evento		int
 	,Nm_descricao	varchar(80)
 	,Dt_evento		datetime
