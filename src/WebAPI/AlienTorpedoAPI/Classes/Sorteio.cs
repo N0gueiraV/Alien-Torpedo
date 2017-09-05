@@ -34,9 +34,11 @@ namespace AlienTorpedoAPI.Classes
             var GrupoEvento = dbContext.GrupoEvento.FirstOrDefault(u => u.IdGrupoEvento == idGrupoEvento);
 
             Random rand = new Random();
-            int toSkip = rand.Next(0, dbContext.Evento.Count());
+            int toSkip = rand.Next(1, dbContext.Evento.Count()+1);
 
-            var Evento = dbContext.Evento.Skip(toSkip).Take(1).First();
+            var Evento = dbContext.Evento.FirstOrDefault(u => u.CdEvento == toSkip);
+                
+                //Skip(toSkip).Take(1).First();
                         
             GrupoEvento.CdEvento = Evento.CdEvento;
 
