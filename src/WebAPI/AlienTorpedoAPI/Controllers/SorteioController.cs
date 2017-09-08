@@ -36,11 +36,14 @@ namespace AlienTorpedoAPI.Controllers
         
         // POST: api/Sorteio
         [HttpPost]
-        public void Post([FromBody]GrupoEvento grupoEvento)
+        public IQueryable Post([FromBody]GrupoEvento grupoEvento)
         {
-
+            int cdEvento = 0;
+            IQueryable result;
             Sorteio sorteio = new Sorteio();
-            sorteio.GeraSorteio(grupoEvento, _dbcontext);
+            cdEvento = sorteio.GeraSorteio(grupoEvento, _dbcontext);
+            result = sorteio.BuscaSorteio(_dbcontext, grupoEvento);
+            return result;
         }
 
         //[HttpPost]
