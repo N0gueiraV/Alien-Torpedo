@@ -51,15 +51,15 @@ Create Table Grupo_usuario
 	,Cd_grupo	int
 	,Nr_voto	smallint
 	Constraint pk_cd_usuario_grupo primary key(Cd_usuario, Cd_grupo)
-	,Constraint fk_cd_usuario foreign key(Cd_usuario) references Usuario
-	,Constraint fk_cd_grupo foreign key(Cd_grupo) references Grupo 
+	,Constraint fk_Grupo_usuario_Usuario_cd_usuario foreign key(Cd_usuario) references Usuario
+	,Constraint fk_Grupo_usuario_Grupo_cd_grupo foreign key(Cd_grupo) references Grupo 
 )
 go
 
 -- Tipo_evento
 Create Table Tipo_evento
 (
-	Cd_tipo_evento	smallint
+	Cd_tipo_evento	smallint identity(1,1)
 	,Nm_tipo_evento varchar(60)
 	Constraint pk_cd_tipo_evento primary key(Cd_tipo_evento)
 )
@@ -68,7 +68,7 @@ go
 -- Evento
 Create table Evento
 (
-	Cd_evento	int
+	Cd_evento	int identity(1,1)
 	,Cd_tipo_evento smallint
 	,Nm_evento	varchar(60)
 	,Nm_endereco varchar(100)
@@ -77,8 +77,8 @@ Create table Evento
 	,Dv_particular bit
 	,Cd_usuario int
 	Constraint pk_cd_evento primary key(Cd_evento)
-	,Constraint fk_evento_tipo_evento foreign key(Cd_tipo_evento) references Tipo_evento
-	,Constraint fk_evento_usuario foreign key(Cd_usuario) references Usuario
+	,Constraint fk_Evento_Tipo_evento_cd_tipo_evento foreign key(Cd_tipo_evento) references Tipo_evento
+	,Constraint fk_Evento_usuario_cd_usuario foreign key(Cd_usuario) references Usuario
 )
 go 
 
@@ -91,6 +91,6 @@ Create Table Grupo_evento
 	,Nm_descricao	varchar(80)
 	,Dt_evento		datetime
 	Constraint pk_id_grupo_evento primary key(Id_grupo_evento)
-	,Constraint fk_grupo_evento_grupo foreign key(Cd_grupo) references Grupo
-	,Constraint fk_grupo_evento_evento foreign key(Cd_evento) references Evento
+	,Constraint fk_Grupo_evento_Grupo_cd_grupo foreign key(Cd_grupo) references Grupo
+	,Constraint fk_Grupo_evento_Evento_cd_evento foreign key(Cd_evento) references Evento
 )
