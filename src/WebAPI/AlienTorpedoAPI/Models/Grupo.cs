@@ -11,7 +11,7 @@ namespace AlienTorpedoAPI.Models
             GrupoUsuario = new HashSet<GrupoUsuario>();
         }
 
-        public short CdGrupo { get; set; }
+        public int CdGrupo { get; set; }
         public string NmGrupo { get; set; }
         public DateTime? DtInclusao { get; set; }
 
