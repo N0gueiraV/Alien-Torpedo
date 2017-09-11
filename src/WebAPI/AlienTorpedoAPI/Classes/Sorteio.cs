@@ -91,7 +91,7 @@ namespace AlienTorpedoAPI.Classes
 
             var dado = dbContext.GrupoEvento.Where(w => w.IdGrupoEvento == grupoEvento.IdGrupoEvento)
                 .Join(dbContext.Evento,
-                      ge => ge.CdGrupo,
+                      ge => ge.CdEvento,
                       e => e.CdEvento,
                       (ge, e) => new { ge, e }
                 )
