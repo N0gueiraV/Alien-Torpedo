@@ -6,7 +6,7 @@ namespace AlienTorpedoAPI.Models
     public partial class GrupoEvento
     {
         public int IdGrupoEvento { get; set; }
-        public short? CdGrupo { get; set; }
+        public int CdGrupo { get; set; }
         public int? CdEvento { get; set; }
         public string NmDescricao { get; set; }
         public DateTime? DtEvento { get; set; }

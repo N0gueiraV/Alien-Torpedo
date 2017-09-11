@@ -6,7 +6,7 @@ namespace AlienTorpedoAPI.Models
     public partial class GrupoUsuario
     {
         public int CdUsuario { get; set; }
-        public short CdGrupo { get; set; }
+        public int CdGrupo { get; set; }
         public short? NrVoto { get; set; }
 
         public virtual Grupo CdGrupoNavigation { get; set; }
