@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AlienTorpedoAPI.Models;
+using AlienTorpedoAPI.Classes;
 
 namespace AlienTorpedoAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[Action]")]
     public class UsuarioController : Controller
     {
         //Vinicius - Construtor para iniciar dbcontext - INI
@@ -26,47 +27,103 @@ namespace AlienTorpedoAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return Json(new { cdretorno = 1, mensagem = "Chamada fora do padrão, favor verificar!" });
             }
 
-            user.NmSenha = CriptografaSenha(user.NmSenha);
+            try
+            {
+                user.NmSenha = Senha.CriptografaSenha(user.NmSenha.ToString());
+                user.DtInclusao = DateTime.Now;
 
-            _dbcontext.Add(user);
-            _dbcontext.SaveChanges();
+                _dbcontext.Add(user);
+                _dbcontext.SaveChanges();
 
-            return Ok("Usuário cadastrado com sucesso!");
+                return Json(new { cdretorno = 0, mensagem = "Usuário cadastrado com sucesso" });
+            }
+            catch
+            {
+                return Json(new { cdretorno = 1, mensagem = "Erro ao cadastrar usuário, favor verificar!"});
+            }
+
         }
 
-        [HttpPut("{CdUsuario}")]
-        public IActionResult AlteraSenha(int CdUsuario, [FromBody] Usuario user)
+        [HttpPut]
+        public IActionResult AlteraSenha([FromBody] Usuario user)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return Json(new { cdretorno = 1, mensagem = "Chamada fora do padrão, favor verificar!" });
             }
 
             if (user == null || user.NmSenha == "")
             {
-                return BadRequest("Favor fornecer a nova senha!");
+                return Json(new { cdretorno = 1, mensagem = "Favor fornecer a nova senha!" });
             }
 
-            //Selecionando usuário
-            var UsuarioCadastrado = _dbcontext.Usuario.FirstOrDefault(u => u.CdUsuario == CdUsuario);
+            var CdRetorno = Senha.AlteraSenha(user.CdUsuario, user.NmSenha, _dbcontext);
 
-            UsuarioCadastrado.NmSenha = CriptografaSenha(user.NmSenha);
-
-            _dbcontext.Usuario.Update(UsuarioCadastrado);
-            _dbcontext.SaveChanges();
-
-            return Ok("Senha alterada com sucesso!");
+            if (CdRetorno == 0)
+            {
+                return Json(new { cdretorno = 0, mensagem = "Senha alterada com sucesso!" });
+            }
+            else
+            {
+                return Json(new { cdretorno = 1, mensagem = "Falha ao alterar senha, favor verificar!" });
+            }
+            
         }
 
-
-        private string CriptografaSenha(string senha)
+        [HttpPut]
+        public IActionResult EditaUsuario([FromBody] Usuario user)
         {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { cdretorno = 1, mensagem = "Chamada fora do padrão, favor verificar!" });
+            }
 
+            try
+            {
+                var UsuarioCadastrado = _dbcontext.Usuario.FirstOrDefault(u => u.CdUsuario == user.CdUsuario);
 
-            return senha;
-        } 
+                UsuarioCadastrado.NmUsuario = user.NmUsuario;
+                UsuarioCadastrado.NmEmail = user.NmEmail;
+                if (UsuarioCadastrado.NmSenha != user.NmSenha)
+                {
+                    UsuarioCadastrado.NmSenha = Senha.CriptografaSenha(user.NmSenha);
+                }
+                _dbcontext.Usuario.Update(UsuarioCadastrado);
+                _dbcontext.SaveChanges();
+
+                return Json(new { cdretorno = 0, mensagem = "Usuário alterado com sucesso!" });
+            }
+            catch
+            {
+                return Json(new { cdretorno = 1, mensagem = "Falha ao alterar usuário, favor verificar!" });
+            }
+        }
+
+        [HttpPut]
+        public IActionResult AlteraStatus([FromBody] Usuario user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { cdretorno = 1, mensagem = "Chamada fora do padrão, favor verificar!" });
+            }
+
+            try
+            {
+                var UsuarioCadastrado = _dbcontext.Usuario.FirstOrDefault(u => u.CdUsuario == user.CdUsuario);
+
+                UsuarioCadastrado.DvAtivo = user.DvAtivo;
+                _dbcontext.Usuario.Update(UsuarioCadastrado);
+                _dbcontext.SaveChanges();
+
+                return Json(new { cdretorno = 0, mensagem = "Status alterado com sucesso!" });
+            }
+            catch
+            {
+                return Json(new { cdretorno = 1, mensagem = "Falha ao alterar status, favor verificar!" });
+            }
+        }
     }
 }
